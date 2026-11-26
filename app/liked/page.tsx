@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import Link from "next/link";
+import BrandLink from "@/components/BrandLink";
 import { redirect } from "next/navigation";
-import { APP_NAME, TOKEN_COOKIE } from "@/lib/config";
+import { TOKEN_COOKIE } from "@/lib/config";
 import { getLikedMusic, getUserName, GoogleApiError } from "@/lib/google";
 import LikedStudio from "./LikedStudio";
 
@@ -59,10 +59,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <main className="container">
       <header className="topbar">
-        <Link href="/" className="brand">
-          {APP_NAME}
-          <span className="brand-dot">.</span>
-        </Link>
+        <BrandLink />
         <form action="/api/auth/logout" method="post">
           <button className="btn btn-ghost" type="submit">Logout</button>
         </form>

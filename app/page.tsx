@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { APP_NAME } from "@/lib/config";
+import BrandLink from "@/components/BrandLink";
 
 const ERRORS: Record<string, string> = {
   access_denied: "Login dibatalkan. Coba lagi kalau sudah siap.",
@@ -18,10 +18,7 @@ export default async function Home({
   return (
     <main className="container">
       <header className="topbar">
-        <Link href="/" className="brand">
-          {APP_NAME}
-          <span className="brand-dot">.</span>
-        </Link>
+        <BrandLink />
       </header>
 
       <section className="hero">

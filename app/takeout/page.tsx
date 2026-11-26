@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { APP_NAME } from "@/lib/config";
+import BrandLink from "@/components/BrandLink";
 import TakeoutStudio from "./TakeoutStudio";
 
 export const metadata: Metadata = {
-  title: `Upload Takeout · ${APP_NAME}`,
+  title: "Upload Takeout",
 };
 
 export default function TakeoutPage() {
   return (
     <main className="container">
       <header className="topbar">
-        <Link href="/" className="brand">
-          {APP_NAME}
-          <span className="brand-dot">.</span>
-        </Link>
+        <BrandLink />
         <Link href="/" className="back">← Kembali</Link>
       </header>
       <TakeoutStudio />
