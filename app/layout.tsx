@@ -41,6 +41,10 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
   },
+  // Verifikasi kepemilikan situs di Google Search Console (dibutuhkan untuk verifikasi branding OAuth).
+  verification: {
+    google: "Ye0OUqw8VM1W9k-GSRe2FGbBH2ZHISPbllfQz7H5M-Y",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
