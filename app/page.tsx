@@ -5,7 +5,7 @@ const ERRORS: Record<string, string> = {
   access_denied: "Login dibatalkan. Coba lagi kalau sudah siap.",
   state: "Sesi login kedaluwarsa atau tidak valid. Silakan login ulang.",
   token: "Gagal menukar kode login dengan token. Cek GOOGLE_CLIENT_ID/SECRET dan redirect URI.",
-  config: "Server belum dikonfigurasi. Isi GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, dan APP_URL di .env.local.",
+  config: "Server belum dikonfigurasi. Isi GOOGLE_CLIENT_ID dan GOOGLE_CLIENT_SECRET di environment variables.",
 };
 
 export default async function Home({

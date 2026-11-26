@@ -1,12 +1,12 @@
 import { randomBytes } from "node:crypto";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { GOOGLE_SCOPES, STATE_COOKIE } from "@/lib/config";
 import { getOAuthConfig } from "@/lib/google";
 
-export async function GET() {
-  const cfg = getOAuthConfig();
-  if (!cfg) {
-    return NextResponse.redirect(new URL("/?error=config", process.env.APP_URL ?? "http://localhost:3000"));
+export async function GET(req: NextRequest) {
+  const cfg = getOAuthConfig(req);
+  if (!cfg.ok) {
+    return NextResponse.redirect(new URL("/?error=config", cfg.appUrl));
   }
 
   // state acak untuk mencegah CSRF, dicek lagi di /api/auth/callback

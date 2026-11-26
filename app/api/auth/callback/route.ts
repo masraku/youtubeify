@@ -3,15 +3,15 @@ import { STATE_COOKIE, TOKEN_COOKIE } from "@/lib/config";
 import { getOAuthConfig } from "@/lib/google";
 
 export async function GET(req: NextRequest) {
-  const cfg = getOAuthConfig();
-  const base = cfg?.appUrl ?? "http://localhost:3000";
+  const cfg = getOAuthConfig(req);
+  const base = cfg.appUrl;
   const fail = (code: string) => {
     const res = NextResponse.redirect(new URL(`/?error=${encodeURIComponent(code)}`, base));
     res.cookies.delete(STATE_COOKIE);
     return res;
   };
 
-  if (!cfg) return fail("config");
+  if (!cfg.ok) return fail("config");
 
   const url = req.nextUrl;
   const error = url.searchParams.get("error");

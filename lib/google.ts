@@ -2,12 +2,40 @@ import "server-only";
 import { parseIsoDuration } from "./format";
 import type { LikedTrack } from "./types";
 
-export function getOAuthConfig() {
+const isLocal = (url: string) => /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i.test(url);
+
+/** Origin asli dari request, termasuk di balik proxy (Vercel, Nginx, Cloudflare, ngrok). */
+function originFromRequest(req: Request): string {
+  const h = req.headers;
+  const host = h.get("x-forwarded-host")?.split(",")[0].trim() || h.get("host");
+  if (host) {
+    const proto =
+      h.get("x-forwarded-proto")?.split(",")[0].trim() ||
+      (/^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i.test(host) ? "http" : "https");
+    return `${proto}://${host}`;
+  }
+  return new URL(req.url).origin;
+}
+
+/**
+ * URL dasar aplikasi.
+ * 1. APP_URL kalau di-set — kecuali isinya localhost padahal request datang dari domain lain
+ *    (kasus umum: .env.local ikut ter-copy ke server deploy).
+ * 2. Kalau tidak, pakai domain yang sedang dibuka user.
+ */
+export function resolveAppUrl(req: Request): string {
+  const fromRequest = originFromRequest(req);
+  const fromEnv = process.env.APP_URL?.trim().replace(/\/$/, "");
+  if (fromEnv && !(isLocal(fromEnv) && !isLocal(fromRequest))) return fromEnv;
+  return fromRequest;
+}
+
+export function getOAuthConfig(req: Request) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const appUrl = (process.env.APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
-  if (!clientId || !clientSecret) return null;
-  return { clientId, clientSecret, appUrl, redirectUri: `${appUrl}/api/auth/callback` };
+  const appUrl = resolveAppUrl(req);
+  if (!clientId || !clientSecret) return { ok: false as const, appUrl };
+  return { ok: true as const, clientId, clientSecret, appUrl, redirectUri: `${appUrl}/api/auth/callback` };
 }
 
 export class GoogleApiError extends Error {

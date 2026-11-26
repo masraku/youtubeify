@@ -45,8 +45,14 @@ Mode **Upload Takeout** bisa langsung dicoba tanpa setup Google. Klik "Coba paka
 ```env
 GOOGLE_CLIENT_ID=xxxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-xxxx
-APP_URL=http://localhost:3000
+# APP_URL opsional: kalau kosong, diambil dari domain yang sedang dibuka
 ```
+
+### Deploy (Vercel, dll.)
+
+- Isi `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` di environment variables hosting. `APP_URL` boleh dikosongkan.
+- Jangan isi `APP_URL=http://localhost:3000` di server. Kalau terisi localhost tapi aplikasi dibuka dari domain lain, nilainya akan diabaikan otomatis.
+- Tambahkan `https://domainkamu.com/api/auth/callback` di **Authorized redirect URIs** OAuth client. Kalau belum, Google akan menolak dengan error `redirect_uri_mismatch`.
 
 ### Catatan sebelum dibuka ke publik
 
