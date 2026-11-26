@@ -57,6 +57,10 @@ export default async function Home({
       <p className="footnote">
         Proyek independen, tidak berafiliasi dengan YouTube atau Google.
       </p>
+      <footer className="site-footer">
+        <Link href="/privacy">Kebijakan Privasi</Link>
+        <Link href="/terms">Ketentuan Layanan</Link>
+      </footer>
     </main>
   );
 }
